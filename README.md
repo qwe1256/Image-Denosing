@@ -15,7 +15,7 @@ CPU only:
 
 <strong>Install required package </strong>. 
 ```
-pip install -r requirement.txt
+pip install -r requirements.txt
 ```
 
 
