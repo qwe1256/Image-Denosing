@@ -18,5 +18,12 @@ CPU only:
 pip install -r requirements.txt
 ```
 
+### Before Training:
+1) Unzip the training and testing datafiles in the data folder<br />
+2) Check config file in conf folder. 
+
+
+
+
 
   
