@@ -1,0 +1,7 @@
+hydra-core==1.2.0
+numpy
+tensorboardX
+pandas
+opencv-python
+Pillow==9.2.0
+scikit-image
