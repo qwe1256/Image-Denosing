@@ -1,13 +1,13 @@
 
 dataset:
   preprocess: False
-  train_dataset: 'data/train'
-  val_dataset: 'data/test'
+  train_dataset: 'data/DIV2K_train_LR_x8'
+  val_dataset: 'data/DIV2K_valid_LR_x8'
   batch_size: 10
   num_workers: 4
 
 model:
-  num_channels: 1
+  num_channels: 3
   num_of_layers: 17
   criterion: MSELoss
   optim: 
