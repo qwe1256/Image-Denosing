@@ -19,7 +19,7 @@ pip install -r requirements.txt
 ```
 
 ### Before Training:
-1）Download dataset from the google drive<br />
+1) Download dataset from the google drive<br />
 2) Create a data folder and unzip the datafiles under the data folder<br />
 3) Check config file in 'conf' folder. <br />
 
