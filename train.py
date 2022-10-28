@@ -34,12 +34,12 @@ def main(cfg):
     
     dataset_train = Dataset(join(get_original_cwd(), cfg.dataset.train_dataset), train=True, transform=transforms.Compose([
             transforms.ToTensor(),
-            transforms.Resize(256)   
+            transforms.Resize((256, 256))   
         ]))
     
     dataset_val = Dataset(join(get_original_cwd(), cfg.dataset.val_dataset), False, transform=transforms.Compose([
             transforms.ToTensor(),
-            transforms.Resize(256)
+            transforms.Resize((256,256))
         ]))
     loader_train = DataLoader(dataset=dataset_train, num_workers=cfg.dataset.num_workers, 
                               batch_size=cfg.dataset.batch_size, shuffle=True)
