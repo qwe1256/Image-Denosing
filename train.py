@@ -7,6 +7,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import torchvision.transforms.functional as F
 import torchvision.utils as utils
 import torchvision.transforms as transforms
 from torch.autograd import Variable
@@ -16,6 +17,8 @@ from math import ceil
 from models import DnCNN
 from dataset import prepare_data, Dataset
 from utils import *
+from matplotlib import pyplot as plt
+import cv2
 
 environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 environ["CUDA_VISIBLE_DEVICES"] = "0"
@@ -34,7 +37,7 @@ def main(cfg):
     
     dataset_train = Dataset(join(get_original_cwd(), cfg.dataset.train_dataset), train=True, transform=transforms.Compose([
             transforms.ToTensor(),
-            transforms.Resize((256, 256))   
+            transforms.Resize((256,256))
         ]))
     
     dataset_val = Dataset(join(get_original_cwd(), cfg.dataset.val_dataset), False, transform=transforms.Compose([
@@ -50,7 +53,7 @@ def main(cfg):
     # Build model
     model = DnCNN(channels=cfg.model.num_channels, num_of_layers=cfg.model.num_of_layers)
     model.apply(weights_init_kaiming) 
-    criterion = getattr(nn, cfg.model.criterion)(size_average=False)
+    criterion = getattr(nn, cfg.model.criterion)()
     # Move to GPU
     device = torch.device('cuda:0')
     model.to(device)
@@ -87,7 +90,7 @@ def main(cfg):
                     noise[n,:,:,:] = torch.Tensor(sizeN).normal_(mean=0, std=stdN[n]/255.)
             imgn_train = img_train + noise
             out_train = model(imgn_train)
-            loss = criterion(out_train, noise) / (imgn_train.size()[0]*2)
+            loss = criterion(out_train, noise)
             loss.backward()
             optimizer.step()
             # results
