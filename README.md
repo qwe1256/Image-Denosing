@@ -19,8 +19,9 @@ pip install -r requirements.txt
 ```
 
 ### Before Training:
-1) Unzip the training and testing datafiles in the 'data' folder<br />
-2) Check config file in 'conf' folder. 
+1）Download dataset from the google drive
+2) Create a data folder and unzip the datafiles under the data folder
+3) Check config file in 'conf' folder. 
 
 
 
