@@ -1,15 +1,16 @@
 
 dataset:
   preprocess: False
-  train_dataset: 'data/train'
-  val_dataset: 'data/test'
+  train_dataset: 'data/DIV2K_train_LR_x8' #relative path
+  val_dataset: 'data/DIV2K_valid_LR_x8' #relative path
+  test_dataset: 'data/test' #relative path
   batch_size: 10
   num_workers: 4
 
 model:
-  num_channels: 1
+  num_channels: 3
   num_of_layers: 17
-  criterion: MSELoss
+  criterion: L1Loss
   optim: 
     type: Adam
     lr: 1e-3
@@ -20,10 +21,12 @@ train:
   noiseL: 25
   noiseLB: [0,55]
   lr_decay: 30
+
+test:
+  ckpt:   'test/SGD_net_49.pth' #relative path
+  noiseL: 25
   
 val:
-  noiseL: 25 
+  noiseL: 25
 
-log:
-  path: 
 

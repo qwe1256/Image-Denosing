@@ -9,13 +9,15 @@ import torch.nn as nn
 import torch.optim as optim
 import torchvision.utils as utils
 import torchvision.transforms as transforms
+import torchvision.transforms.functional as F
 from torch.autograd import Variable
 from torch.utils.data import DataLoader
 from tensorboardX import SummaryWriter
 from math import ceil
 from models import DnCNN
-from dataset import prepare_data, Dataset
+from dataset import  Dataset
 from utils import *
+from matplotlib import pyplot as plt
 
 environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 environ["CUDA_VISIBLE_DEVICES"] = "0"
@@ -23,23 +25,17 @@ environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 @hydra.main(config_path="conf", config_name="config")
 def main(cfg):
-    if cfg.dataset.preprocess:
-        if cfg.train.mode == 'S':
-            prepare_data(data_path='data', patch_size=40, stride=10, aug_times=1)
-        if cfg.train.mode == 'B':
-            prepare_data(data_path='data', patch_size=50, stride=10, aug_times=2)
-    
     # Load dataset
     print('Loading dataset ...\n')
     
     dataset_train = Dataset(join(get_original_cwd(), cfg.dataset.train_dataset), train=True, transform=transforms.Compose([
             transforms.ToTensor(),
-            transforms.Resize(256)   
+            transforms.Resize((256, 256))   
         ]))
     
     dataset_val = Dataset(join(get_original_cwd(), cfg.dataset.val_dataset), False, transform=transforms.Compose([
             transforms.ToTensor(),
-            transforms.Resize(256)
+            transforms.Resize((256,256))
         ]))
     loader_train = DataLoader(dataset=dataset_train, num_workers=cfg.dataset.num_workers, 
                               batch_size=cfg.dataset.batch_size, shuffle=True)
@@ -50,7 +46,7 @@ def main(cfg):
     # Build model
     model = DnCNN(channels=cfg.model.num_channels, num_of_layers=cfg.model.num_of_layers)
     model.apply(weights_init_kaiming) 
-    criterion = getattr(nn, cfg.model.criterion)(size_average=False)
+    criterion = getattr(nn, cfg.model.criterion)()
     # Move to GPU
     device = torch.device('cuda:0')
     model.to(device)
@@ -87,7 +83,7 @@ def main(cfg):
                     noise[n,:,:,:] = torch.Tensor(sizeN).normal_(mean=0, std=stdN[n]/255.)
             imgn_train = img_train + noise
             out_train = model(imgn_train)
-            loss = criterion(out_train, noise) / (imgn_train.size()[0]*2)
+            loss = criterion(out_train, noise) 
             loss.backward()
             optimizer.step()
             # results
