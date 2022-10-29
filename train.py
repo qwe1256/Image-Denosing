@@ -7,6 +7,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import torchvision.transforms.functional as F
 import torchvision.utils as utils
 import torchvision.transforms as transforms
 import torchvision.transforms.functional as F
@@ -18,6 +19,7 @@ from models import DnCNN
 from dataset import  Dataset
 from utils import *
 from matplotlib import pyplot as plt
+
 
 environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 environ["CUDA_VISIBLE_DEVICES"] = "0"
@@ -91,6 +93,7 @@ def main(cfg):
             psnr_train = batch_PSNR(out_train, img_train, 1.)
             print("[epoch %d][%d/%d] loss: %.4f PSNR_train: %.4f" %
                 (epoch+1, i+1, len(loader_train), loss.item(), psnr_train))
+            #log.info("Info level message")
             if step % 10 == 0:
                 # Log the scalar values
                 writer.add_scalar('loss', loss.item(), step)
