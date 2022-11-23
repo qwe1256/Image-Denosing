@@ -3,3 +3,4 @@ outputs/*
 __pycache__/*
 test/*
 .vscode/*
+/*.DS_Store
