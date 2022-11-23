@@ -49,8 +49,8 @@ def main(cfg):
     model = DnCNN(channels=cfg.model.num_channels, num_of_layers=cfg.model.num_of_layers)
     model.apply(weights_init_kaiming) 
     criterion = getattr(nn, cfg.model.criterion)()
-    # Move to GPU
-    device = torch.device('cuda:0')
+    # Move to Device
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
     criterion.to(device)
     # Optimizer
